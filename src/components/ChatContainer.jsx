@@ -43,26 +43,32 @@ export default function ChatContainer({ currentChat, socket }) {
   }, [currentChat]);
 
   const handleSendMsg = async (msgText) => {
-    socket.current.emit("send-msg", {
-      to: currentChat._id,
-      from: storedUser._id,
-      msg: msgText,
-    });
     try {
       const { data } = await axios.post(sendMessageRoute, {
         from: storedUser._id,
         to: currentChat._id,
         message: msgText,
       });
+  
       if (data.status && data.message) {
-        setMessages((prev) => [...prev, { ...data.message, fromSelf: true }]);
+        // Emit AFTER getting full data with _id, createdAt, etc.
+        socket.current.emit("send-msg", {
+          to: currentChat._id,
+          from: storedUser._id,
+          msg: data.message.message,
+        });
+  
+        setMessages((prev) => [...prev, data.message]); // ✅ Use message from server
       }
+      fetchMessages();
     } catch (err) {
       console.error("Error sending message:", err);
     }
   };
+  
 
   const handleEdit = async (msgObj) => {
+    console.log(msgObj);
     const newText = prompt("Edit your message:", msgObj.message);
     if (!newText || newText === msgObj.message) return;
 
