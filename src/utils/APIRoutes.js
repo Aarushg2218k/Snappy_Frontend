@@ -1,4 +1,6 @@
-export const host = "https://snappy-backend-jnek.onrender.com";
+export const host = process.env.REACT_APP_SOCKET_HOST || "https://snappy-backend-jnek.onrender.com";
+export const socketHost = process.env.REACT_APP_SOCKET_HOST || "https://snappy-backend-jnek.onrender.com";
+// export const host = "http://localhost:5000";
 
 // Authentication
 export const loginRoute        = `${host}/api/auth/login`;

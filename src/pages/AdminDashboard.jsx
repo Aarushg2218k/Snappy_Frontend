@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import { host } from '../utils/APIRoutes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminDashboard = () => {
@@ -14,7 +15,7 @@ const AdminDashboard = () => {
         return;
       }
 
-      const res = await fetch('http://localhost:5000/api/admin/users', {
+      const res = await fetch(`${host}/api/admin/users`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -38,7 +39,7 @@ const AdminDashboard = () => {
 
   const updateRole = async (id, newRole) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/user/${id}/role`, {
+      const res = await fetch(`${host}/api/admin/user/${id}/role`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ const AdminDashboard = () => {
   
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`http://localhost:5000/api/admin/user/${id}`, {
+        const res = await fetch(`${host}/api/admin/user/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`

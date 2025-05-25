@@ -34,7 +34,9 @@ export default function Chat() {
 
   useEffect(() => {
     if (currentUser) {
-      socket.current = io(host); // Establish socket connection
+      socket.current = io(host, {
+        transports: ["websocket"], // ✅ Forces WebSocket on Render
+      }); // Establish socket connection
       socket.current.emit("add-user", currentUser._id);
   
       // 🔥 ADD THIS
